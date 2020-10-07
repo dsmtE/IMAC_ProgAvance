@@ -112,7 +112,7 @@ extern "C" {
 	/// Type used by the calling app to call getBoidsUtil() at runtime.
 	/// The executable expects a "getBoidsUtil()" function with "C" signature, which returns the singleton instance of the derived BoidsUtil.
 	typedef BoidsUtil & (*BoidsUtilInstanceFunc)();
+	BoidsUtil & getBoidsUtil();	
 }
-
 
 #endif	// BOIDS_PLUGIN

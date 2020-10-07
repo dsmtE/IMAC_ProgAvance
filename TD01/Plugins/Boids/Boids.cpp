@@ -303,9 +303,14 @@ public:
 
 	virtual Target * newTarget(const osg::Vec3 pos, float multiplier, float radius) {
 		// TODO TD1 - See listTargets global
+		std::shared_ptr<Target> target = std::make_shared<Target>(pos, multiplier, radius);
+		listTargets.push_back(target);
+		return target.get();
 	}
 	virtual void deleteTarget(Target * t) {
 		// TODO TD1 - See listTargets global
+		listTargets.remove_if([&t](auto target) { return target.get() == t; });
+		// delete t; // automatically deleted by shared_ptr behaviour
 	}
 
 	virtual void targetUpdated(Target * target) {
@@ -320,3 +325,6 @@ protected:
 };
 
 // TODO TD1 - Plugin entry point
+BoidsUtil & getBoidsUtil() {
+	return BoidsUtilSKD::instance();
+}

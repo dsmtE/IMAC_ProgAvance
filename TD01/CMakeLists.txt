@@ -215,7 +215,7 @@ ENDFUNCTION()
 # CONFIGURE_FILE("${CMAKE_CURRENT_SOURCE_DIR}/Src/Config.in" "${BTD_CONFIG_HEADER}")
 
 ADD_SUBDIRECTORY(Src)
-#ADD_SUBDIRECTORY(Plugins/Boids)
+ADD_SUBDIRECTORY(Plugins/Boids)
 
 # This needs to be run very last so other parts of the scripts can take advantage of this.
 IF(NOT ${PROJECT_NAME}_CONFIG_HAS_BEEN_RUN_BEFORE)

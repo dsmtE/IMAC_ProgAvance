@@ -580,7 +580,7 @@ void App::load() {
 	auto lib      = BTDWrapperLoader::instance().openLibrary(libName);
 	if (!lib) lib = BTDWrapperLoader::instance().openLibrary("Bin/" + libName);
 	if (!lib) lib = BTDWrapperLoader::instance().openLibrary("bin/" + libName);
-	//if (!lib) lib = BTDWrapperLoader::instance().openLibrary("Plugins/boids");
+	if (!lib) lib = BTDWrapperLoader::instance().openLibrary("Plugins/boids");
 	if (!lib) THROW_STR("Could not locate the boids plugin '" + libName + "'. Please ensure the file is in the path.");
 	BoidsUtilInstanceFunc f = reinterpret_cast<BoidsUtilInstanceFunc>( lib->getProcAddress("getBoidsUtil") );
 	if (!f) THROW_STR("Could not locate getBoidsUtil() function in the boids plugin. Please double check your plugin.");
