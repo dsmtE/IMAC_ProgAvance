@@ -1,0 +1,53 @@
+PVLE coding convention (modified)
+---------------------------------
+
+Naming conventions
+	Everything (Code, documentation, filenames...) must be in english, in order to avoid mixing languages (like "int getGrabeulwit()" ;P ).
+	Types, namespaces and enums (UpperCamelCase)
+		Structure, Class, MyStructure, MyClass, C3DClass (The "C" avoids the identifier to begin with a digit)
+		(Optional) IMyInterface, AbstractMyClass
+		Type, MyType, (Or optionally, to emphasis the fact that the type is a typedef, or kind of, use: ) TType, TMyType
+		Namespace, MyNamespace
+		Enum, MyEnum (formerly using 'E' as prefix)
+		(Optional) MyTypeT ('T' appened at the end), to emphasis the fact that the a is templated (to avoid confusion with a non templated one)
+	Values: Constants (UPPER_CASE) and variables (lowerCamelCase)
+		CONSTANT, MY_CONSTANT, MY_DEFINE, MY_ENUM_VALUE
+		variable, myMember (no "m_" prefix), myStaticMember (no "ms_" prefix), myVariable
+		(Optional, to avoid ambiguities) pMyPointer, pMySmartPointer, strMyString, vMyVector, bMyBoolean, iMyInteger, fMyFloat, dMyDouble, etc...
+	Other
+		MACRO, MY_MACRO
+		function(), myMethod(), myFunction()
+		(Optional) functionT() ('T' appened at the end), to emphasis the fact that a function or method is templated (to avoid confusion with a non templated one)
+	Files and directories (UpperCamelCase)
+		Naming convention is similar to Types: File, MyFile, MyDirectory
+		Remember that files can be on a non case-sensitive OS: never use two similar names with different case.
+
+Formatting conventions
+	Code is indented with tabs.
+	Text aligments are done with spaces, or eventually (but not recommented) with tabs of size 4.
+	Opening braces ({) are "Java/C++ styled" ; that means they're at the end of the line of an instruction, function prototype, class declaration, or enum declaration.
+	Trivial methods/functions can be written on a single line (ex: "inline int getThat() { return that; }").
+	Any non-trivial statements ('if', 'for', 'while', 'case'...) must be enclosed by braces ({}).
+
+Coding rules (Some could seem obvious, but it's always useful !)
+	Always "const-ify" when possible. A non-const method that should be const results in an horrible and painful death of the coder. ;)
+	Avoid (as possible) long functions/methods (>50 lines of full code, or >100 lines of commented code).
+	Always use C++-style casts. If writing "static_cast<something>()" is too long for you, then you must rethink your code.
+		const_cast<> and reinterpret_cast<> are forbidden until really-really-really-really neccessary.
+		Think about using boost::polymorphic_downcast<> and boost::polymorphic_cast<>.
+	The less code you write for a given feature, the less bugs you'll have.
+	Avoid 'while' and 'do.. while' loops. Prefer 'for' loops, even if the 'for' have empty instructions; because all loop conditions are on the same line.
+	Avoid global variables! If necessary (for readability, maintenability...), prefer singletons when possible.
+	Think "modularity". That means that creating small "black boxes" classes is a good idea. Moreover, "black boxes" classes allow you to quickly develop an ugly code... as long as the class is small, and as long as it does what it was written for.
+	Think "reusability".
+	Documentation & comments
+		Anything not trivial must be documented, even inside a function.
+		All documentation (except standard comments) must be compatible with doxygen.
+		Try to group methods in logic groups (doxygen : "///@{" and "///@}"), and document them if needed.
+		Creating doxygen pages if needed (to explain a complex feature/architecture, for instance) is always a good idea.
+		Prefer C++-style comments ('//').
+	Libraries
+		STL is your best friend, especially if C++2011 or above.
+		boost is also your friend.
+		If you think about coding something very generic, then it has probably been coded and tested by someone else.
+

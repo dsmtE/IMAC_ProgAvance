@@ -1,0 +1,33 @@
+#!/bin/bash
+
+src=/home/ens/neil/libs
+dest=/tmp/neil/libs
+
+#rsync -rltDh --prune-empty-dirs --delete --progress --include '*/' --include '*.hpp' --include '*.h' --exclude '*' $src/ $dest/
+
+echo ""
+echo "Synchronisation en RAM des includes de boost..."
+mkdir -p $dest/boost_1_56_0/boost
+rsync -rltDh --prune-empty-dirs --delete --progress $src/boost_1_56_0/boost $dest/boost_1_56_0/boost
+export CXXFLAGS="-isystem $dest/boost_1_56_0 $CXXFLAGS"
+
+echo ""
+echo "Synchronisation en RAM des includes d'OpenSceneGraph..."
+mkdir -p $dest/osg/include/
+rsync -rltDh --prune-empty-dirs --progress $src/osg/include/ $dest/osg/include/
+export CXXFLAGS="-isystem $dest/osg/include $CXXFLAGS"
+
+echo ""
+echo "Première configuration..."
+rm CMakeCache.txt || echo "  (warning ignoré)"
+
+#./configureSKD
+cmake . -DBoost_NO_SYSTEM_PATHS:BOOL=ON -DBoost_LIBRARY_DIR="$BOOST_ROOT/stage/lib" -DCMAKE_PREFIX_PATH:PATH=/tmp/neil/libs
+
+echo ""
+echo "Bidouillage des fichiers générés par CMake..."
+echo 'set(CMAKE_CXX_TARGET_INCLUDE_PATH "/tmp/neil/libs/osg/include" "/tmp/neil/libs/boost_1_56_0" ${CMAKE_CXX_TARGET_INCLUDE_PATH})' >> Src/CMakeFiles/btd.dir/DependInfo.cmake
+rm Src/CMakeFiles/btd.dir/depend.internal || echo "  (warning ignoré)"
+
+echo ""
+echo "C'est bon pour 'make -j2' !"

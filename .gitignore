@@ -1,0 +1,13 @@
+
+/bin
+/build
+
+/Data/Profiles
+
+# In-source builds
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+/Bin
+/Lib
+CMakeFiles

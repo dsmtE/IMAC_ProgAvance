@@ -1,0 +1,64 @@
+Procédure CMake
+---------------
+
+** Résumé **
+- Copier le projet (ex : /home/ens/neil/td1) en local
+- Lancer "source /home/ens/neil/setdirs.sh"
+- Lancer "./configureSKD" depuis le répertoire du TD.
+- Sortez de CMake et lancez "make" ou "make -j2"
+
+
+** Détail **
+Pour générer le makefile du projet, il faut :
+- CMake
+- Les sources du projet
+- Les dépendances précompilées du projet
+
+0. Préparation
+Pour définir des variables d'environnement adéquates, lancer "source /home/ens/neil/setdirs.sh" dans un terminal.
+Elles permettent de :
+	- Placer CMake dans votre PATH (permet de le lancer via la commande "cmake-gui").
+	- Définir les chemins où chercher certaines bilbiothèques.
+Toutes les commandes ULTÉRIEURES profiteront de ces variables. Cela signifie que si vous ouvrez un autre terminal "neuf", les commandes qui s'appuient dessus ne fonctionneront pas.
+Pour chez vous, vous pouvez définir un fichier similaire, ou intégrer les définitions dans votre .bashrc par exemple.
+
+1. CMake
+Pour les TDs, les exécutables "cmake" et "cmake-gui" seront accessibles directement grâce aux variables d'environnement. Inutile de copier CMake sur votre compte, bien qu'il ne soit pas très volumineux.
+
+2. Sources du projet
+Les projets des TDs sont accessbiles avec un chemin du type "/home/ens/neil/tdN", avec 'N' le n° du TD.
+Pour pouvoir modifier les sources, il faut copier le projet en local sur votre compte.
+
+3. Dépendances
+Pour les TDs, les dépendances seront trouvées automatiquement grâce aux variables d'environnement.
+Pour information, Les dépendances se trouvent dans les répertoires système et dans /home/ens/neil/libs. Il est inutile et dangereux de copier toutes les bibliothèques sur votre compte (trop volumineuses).
+Les bibliothèques les plus courantes installées dans un répertoire "standard" (comme /usr/include, /usr/lib) sont généralement trouvées automatiquement par CMake.
+Pour les autres, on fait usage de variables d'environnement qui sont lues par les scripts CMake, pour que nos dépendances soient trouvées.
+Dans le cas où l'on ne mettrait pas ces variables, il faudrait tout renseigner à la main, et cela s'avère vite fastidieux pour des bibliothèques lourdes (type boost ou OpenSceneGraph).
+
+4. Génération
+On distingue deux "layouts" différents :
+	- in-source : C'est la génération des makefiles et binaires dans le répertoire de votre projet
+	- out-the-source : À l'inverse du précédent, on utilise un répertoire séparé. C'est généralement préférable car la suppression du répertoire supplémentaire suffit à tout nettoyer.
+
+4.1 En ligne de commande
+Il suffira de lancer "configureSKD" depuis le répertoire du TD, qui fait toute la génération avec les bons paramètres pour les postes de l'université, en mode "in-source".
+
+4.2 Avec l'interface graphique
+Lancer CMake via "cmake-gui &".
+Rappel : Vous devez lancer CMake en vous assurant qu'il ait les variables d'environnement.
+Définir les répertoires :
+	- Source code : Racine du projet local (ex : ~/td1)
+	- Binaries : Le même répertoire pour du in-source, ou un sous-répertoire ou autre (ex : ~/td1/build) pour du out-the-source
+- Faites "Configure". CMake lit les scripts adéquats et effectue les opérations. Les nouvelles variables sont affichées en rouge.
+	- Il est possible de modifier ces variables selon votre besoin.
+	- Tenez compte des erreurs, avertissements et messages produits.
+	/!\ Problème avec comptes université : boost n'est pas localisé correctement.
+		Vous devez remplacer les chemins /usr/lib par /home/ens/neil/libs/boost/stage/lib
+		- Méthode "Brute force" : remplacez la chaine dans toutes les variables Boost_*
+		- Méthode "Re-find" :
+			- Mettre le bon chemin dans Boost_DIR
+			- Supprimer toutes les variables Boost_*, sauf Boost_DIR
+			- Relancer "configure"
+- Recommencez à configurer tant qu'il existe des nouvelles variables ou des variables que vous modifiez.
+- Générez le projet (bouton "Generate") : Vous avez désormais un makefile dans votre répertoire destination, que vous pouvez utiliser de façon habituelle.

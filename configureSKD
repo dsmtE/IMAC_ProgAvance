@@ -1,0 +1,3 @@
+#!/bin/bash
+cmake . -DBoost_NO_SYSTEM_PATHS:BOOL=ON -DBoost_LIBRARY_DIR="$BOOST_ROOT/stage/lib" $@
+
